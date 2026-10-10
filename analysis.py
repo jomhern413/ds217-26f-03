@@ -29,12 +29,29 @@ def load_readings(filename):
 
 def main():
     patient_ids, monitors, hour_columns, readings = load_readings("data/bp_readings.csv")
-    print(f"Loaded {readings.shape[0]} patients x {readings.shape[1]} hours")
+    monitor_means = []
+    monitor_count = 0
+    for monitor in sorted(set(monitors)):
+            monitor_means = np.append(monitor_means,readings[monitors == monitor].mean().max())
+            monitor_count=monitor_count+1
 
-    # TODO: answer each question in the README's summary table with NumPy.
-
-    # TODO: write one "key: value" line per answer to output/vitals_summary.txt.
-
+    with open("output/vitals_summary.txt", "w", encoding="utf-8") as theReport:
+        theReport.write("")
+        print(f"Loaded {readings.shape[0]} patients x {readings.shape[1]} hours.",file=theReport)
+        print(f"patients: {patient_ids.size}",file=theReport)
+        print(f"readings: {readings.size}",file=theReport)
+        print(f"mean_sbp: {readings.mean():.1f} mmHg",file=theReport)
+        print(f"sd_sbp: {readings.std():.1f} mmHg",file=theReport)
+        print(f"min_sbp: {readings.min()} mmHg",file=theReport)
+        print(f"max_sbp: {readings.max()} mmHg",file=theReport)
+        print(f"stage2_patients: {((readings.mean(axis=1))>=140).sum()}",file=theReport)
+        print(f"highest_patient: {patient_ids[((readings.mean(axis=1)).argmax())]}", file=theReport)
+        print(f"highest_patient_mean: {((readings.mean(axis=1)).max())} mmHg", file=theReport)
+        print(f"peak_hour_column: {hour_columns[(readings.mean(axis=0)).argmax()]}", file=theReport)
+        print(f"peak_hour_mean: {(readings.mean(axis=0)).max()} mmHg", file=theReport)
+        print(f"high_monitor: {monitors[monitor_means.argmax()]}", file=theReport)
+        print(f"monitor_offset: {monitor_means.max()-(((monitor_means.sum()-monitor_means.max()))/((monitor_means.size)-1))}", file=theReport)
+        print(f"stage2_other_monitors: {(((readings[(~(monitors == monitors[np.array(monitor_means).argmax()]))])).mean(axis=1) >= 140).sum()}", file=theReport)
 
 if __name__ == "__main__":
     main()

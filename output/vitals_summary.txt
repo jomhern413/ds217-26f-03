@@ -1,0 +1,15 @@
+Loaded 300 patients x 12 hours.
+patients: 300
+readings: 3600
+mean_sbp: 130.6 mmHg
+sd_sbp: 14.9 mmHg
+min_sbp: 88 mmHg
+max_sbp: 180 mmHg
+stage2_patients: 79
+highest_patient: P0131
+highest_patient_mean: 168.33333333333334 mmHg
+peak_hour_column: sbp_h04
+peak_hour_mean: 137.96333333333334 mmHg
+high_monitor: M04
+monitor_offset: 7.72783996868165
+stage2_other_monitors: 60
